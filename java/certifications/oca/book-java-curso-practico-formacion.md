@@ -181,3 +181,75 @@ de la clase `java package.ClassName`
 >[!IMPORTANT]
 >Al momento de ejecutar una clase se indica el nombre de la misma, no el archivo 
 .class que la contine
+
+
+# 2. Tipos de datos
+
+## 2.1 Variables
+En java, los datos se manejan mediante variables independientemente de su tipo.
+Una variables es una seccion de memoria a la cual le asiganamos un identificador y en la
+que se alamcenan los datos del programa.
+
+### 2.1.1 Declaracion de una variable
+Declarar una variable consiste en definir el tipo e indentificador de la misma.
+la sintaxis que debemos seguir es `tipo identificador;`, por ejemplo, `int edad;`.
+
+>[!IMPORTANT]
+>En Java es necesario declarar una variable antes de poder usarla.
+
+Para asignar un valor a una variable podemos seguir la sintaxis `identificador = valor;`, 
+siguiendo con el ejemplo anterior seria de la siguiente manera `edad = 18;`.
+
+Existen otras maneras de declarar variables:
+- **Declarar y asignar valor en una sola instruccion:** `int a = 1;`
+- **Declarar multiples variables en una sola linea:** `int b, c, d=8;`
+
+ >[!IMPORTANT]
+>El identificador de una variable debe cumplir con las siguientes reglas:
+> - Se permite cualquier combinacion de letras, números y los símbolos $ y _
+> - No se permite utilizar palabras reservadad de Java
+> - No puede comenzar con un carácter numerico.
+>
+> Si alguna de estas reglas no se cumple se generara un error de compilacion
+
+### 2.1.2 Ambito de una variable
+El ambito de una variable se refiere a la visibilidad de la misma, esto esta determinado por
+el lugar donde se declara. Tenemos dos tipos de ambitos:
+- **Atributo:** declaracion a nivel de clase, son compartidad por todos los metodos
+- **Local:** declaracion a nivel de metodo, solo es visible en el metodo que la declara
+
+>[!NOTE]
+>En Java una variable local puede tener el mismo nombre que una variable atributo, en este caso,
+>para utilizar la variable atributo hacemos uso de `this`
+
+>[!NOTE]
+>Si una variable es declara dentro de bloque de codigo como un if, for, while o algun otro
+>Solo sera visible dentro de ese bloque.
+
+Ejemplos:
+```java
+public class TestClass{
+    int x;
+
+    public void testMethod(){
+        int x = 10;  //variable local
+        this.x = x + 3  //variable atributo
+    }
+}
+```
+
+```java
+public class TestClass{
+    int x;
+
+    public void testMethod(){
+        int x = 10;  
+        if(x > 5){
+            int y = 5; //solo es visible dentro del if
+            this.x = x + y + 3;
+        }
+    }
+}
+```
+
+### 2.1.3 Inicializacion por defecto
