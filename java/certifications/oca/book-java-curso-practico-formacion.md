@@ -132,3 +132,52 @@ Esta sentencia nos permite importar clases de las siguientes maneras:
 `package` e `import` se producira un error de compilacion
 
 ---
+
+### 1.4 El metodo main
+Un programa en Java puede estar conformado por muchas clases, entre todas ellas debe 
+existir una que contenga el metodo main. Este metodo es el punto de entrada, es utilizado por la JVM cuando se ejecuta la clase.
+
+El metodo main solo admite dos formatos
+```java
+public static void main(String[] args){
+    ...
+}
+
+public static void main(String arg1, String arg2, ..., String argN){
+    ...
+}
+```
+
+>[!CAUTION]
+>Si el metodo main tiene un formato incorrecto **no se provocara un error de compilacion**
+ya que sintacticamente son correctos, sin emabrgo, al ejecutar la clase se producira un 
+error de ejecucion ya que la JVM no encontrara el metodo main
+
+### 1.5 Compilación y ejecución de programas Java
+Para poder compilar y ejecutar programas Java es necesario contar con el JDK.
+El JDK (Java Development Kit) proporciona herramientas para realizar estas tareas,
+asi como clases que conforman el Java Standar Edition (Java SE).
+
+Para descargar alguna version del JDK se puede hacer en el siguienete enlace:
+[https://www.oracle.com/java/technologies/downloads/](https://www.oracle.com/java/technologies/downloads/)
+
+#### 1.5.1 Compilación
+Para compilar un archivo .java debemos ejecutar por linea de comandos el comando: 
+`javac FileName.java`
+
+Si las clases que utilizamos estan definidas en paqutes y queremos que se genere
+la estructura de carpetas, debemos usar: `javac -d . FileName.java`
+
+>[!IMPORTANT]
+> Si el codigo fuente tiene errores de compilacion, estos se mostraran en consola
+
+#### 1.5.2 Ejecución
+La ejecucion consiste en ejecutar la clase que contiene el metodo main, para ello
+utilizamos el comando `java ClassName`
+
+Si la clase se encuentra dentro de un paquete, se debe utilizar el nombre cualificado
+de la clase `java package.ClassName` 
+
+>[!IMPORTANT]
+>Al momento de ejecutar una clase se indica el nombre de la misma, no el archivo 
+.class que la contine
