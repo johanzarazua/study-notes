@@ -44,9 +44,9 @@ mediante este molde.
 Una clase se define utilizando la palabra reservada `class` seguida de un nombre, y entre 
 llaves el contenido de la clase.
 Una clase puede contener:
-- atributos: variables que almacenan propiedades de los objetos
-- constructores: funciones para crear objetos de la clase
-- metodos: funciones para implementar comportamientos del objeto
+- **atributos:** variables que almacenan propiedades de los objetos
+- **constructores:** funciones para crear objetos de la clase
+- **metodos:** funciones para implementar comportamientos del objeto
 
 >[!NOTE]
 >Un archivo .java puede varias clases, pero solo 1 debe utilizar
@@ -56,3 +56,79 @@ el modificador de acceso `public` y su nombre deve coincidir con el nombre del a
 >Si un archivo .java contiene dos o mas clases con el modificador de acceso `public` se genera
 un error de compilacion
 
+Ejemplo de una clase
+```java
+public class Car{
+    private String model;  //atributo
+    
+    public Car(){  //constructor
+
+    }
+
+    public void acelerar(){  //metodo
+
+    }
+}
+```
+
+Para crear objetos de una clase utilizamos la palabra `new`.
+```java
+Car car = new Car();
+```
+
+Para hacer uso de los metodos de una clase utilizamos el objeto y con operador punto (.)
+podemos acceder a los metodos.
+```java
+car.acelerar();
+```
+---
+#### 1.3.1 Empaquetado de una clase
+Las clases se organizan en paquetes (directorios), cada paquete puede contener varios
+archivos .class y subpaquetes.
+El paquete se puede definir  utilizando la palabra `package <package-name>`, 
+esta sentencia debe ir al princiipio del archivo .java, todas las clases definidas
+en el archivo estaran en el mismo paquete
+
+```java
+package vehicle 
+
+public class Car{
+
+}
+
+class Aeroplane{
+
+}
+```
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+
+classDiagram
+namespace vehicle {
+    class Car
+    class Aeroplane 
+}
+
+```
+---
+#### 1.3.2 Importacion de clases
+Para utilizar clases de otros paquete se deben importar dentro del archivo .java, para ello
+utilizamos la sentencia `import`. Esta setencia debe ir despues de la setencia `package` y
+antes de la definicion de la clase
+Esta sentencia nos permite importar clases de las siguientes maneras:
+- **Importar una clase:** `import java.util.ArrayList`
+- **Importar todas las clases de un paquete:** `import java.util.*`
+- **Importar atributos estaticos de una clase:** `import java.lang.Math.*`
+
+---
+
+>[!CAUTION]
+>La sentencia `package` debe ser la primera del archivo .java, si se invierte el orden entre 
+`package` e `import` se producira un error de compilacion
+
+---
