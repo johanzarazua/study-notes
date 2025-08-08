@@ -20,16 +20,16 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
       - [2.1.2 Ambito de una variable](#212-ambito-de-una-variable)
       - [2.1.3 Inicializacion por defecto](#213-inicializacion-por-defecto)
     - [2.2 Tipos de datos](#22-tipos-de-datos)
-    - [2.2.1 Tipos primitivos](#221-tipos-primitivos)
-      - [Literales](#literales)
-      - [Conversion de tipos](#conversion-de-tipos)
-    - [2.2.2 Tipos Objeto](#222-tipos-objeto)
-      - [Ciclo de vida de los objetos](#ciclo-de-vida-de-los-objetos)
-        - [Creacion](#creacion)
-        - [Destruccion](#destruccion)
-      - [Clases de envoltorio](#clases-de-envoltorio)
-        - [Autoboxing/Unboxing](#autoboxingunboxing)
-        - [Inmutabilidad de objetos envoltorio](#inmutabilidad-de-objetos-envoltorio)
+      - [2.2.1 Tipos primitivos](#221-tipos-primitivos)
+        - [Literales](#literales)
+        - [Conversion de tipos](#conversion-de-tipos)
+      - [2.2.2 Tipos Objeto](#222-tipos-objeto)
+        - [Ciclo de vida de los objetos](#ciclo-de-vida-de-los-objetos)
+          - [Creacion](#creacion)
+          - [Destruccion](#destruccion)
+        - [Clases de envoltorio](#clases-de-envoltorio)
+          - [Autoboxing/Unboxing](#autoboxingunboxing)
+          - [Inmutabilidad de objetos envoltorio](#inmutabilidad-de-objetos-envoltorio)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -298,7 +298,7 @@ La inicializacion por defecto depende del ambito de la variable.
 En Java existen dos grupos de tipos de datos **tipos primitivos** y **tipo objetos**. 
 Estos tipos son tratados internamente de forma distinta.
 
-### 2.2.1 Tipos primitivos
+#### 2.2.1 Tipos primitivos
 
 Los tipos de datos primitivos representan a los tipos basicos del lenguaje. Al declarar y asignar 
 valor a un tipo primitivo, internamente la variable almacena el datoen si.
@@ -328,7 +328,7 @@ Se cuenta con 8 tipos primitivos, los cuales se muestran en la siguiente tabla:
 | double  | decimal de 64 bits        |
 | char    | codigo unicode de 16 bits |
 
-#### Literales
+##### Literales
 A un dato especifico de un tipo primitivo se le conoce tambien como **literal**.
 Los literales se pueden asignarse directamente a la variable del tipo que representan.
 
@@ -363,7 +363,7 @@ int a = 1_000_000 //correcto
 double b = 37.30_49 //correcto 
 ```
 
-#### Conversion de tipos
+##### Conversion de tipos
 Todos los datos primitivos pueden ser convertidos a otro tipo de dato, excepto los booleanos.
 Las conversiones de datos pueden ser de dos tipos:
 
@@ -377,7 +377,7 @@ tamaño que el destino
 > - El tipo origen sea decimal y el destino sea entero
 
 
-### 2.2.2 Tipos Objeto
+#### 2.2.2 Tipos Objeto
 Cualquier clase Java es de tipo objeto, se utilizan mediente variables pero internamente se 
 manejan de forma distinta. Cuando se crear una variable de tipo objeto, esta almacena una
 referencia hacia la zona de memoria donde se encuentra el objeto.
@@ -418,7 +418,7 @@ Car car = new Car();
 car.turnOn();
 ```
 
-#### Ciclo de vida de los objetos
+##### Ciclo de vida de los objetos
 
 ```mermaid
 flowchart LR
@@ -431,7 +431,7 @@ flowchart LR
     u ==> d
 ```
 
-##### Creacion
+###### Creacion
 Para crear una instancia de una clase se utiliza el operador `new` seguido del nombre de la clase
 Esta instruccion crea un objeto nuevo en memoria y devuelve una referencia a este objeto para
 almacenarla en la variable.
@@ -475,7 +475,7 @@ public class TestClass{
 }
 ```
 
-##### Destruccion
+###### Destruccion
 La destruccion de un objeto y la liberacion de la memoria ocupada por el mismo es realizado
 por un proceso del **Garbage Collector (GC)**.
 Cuando este proceso se ejecute se liberara la memoria de todos los objetos que hayan sido marcados
@@ -508,7 +508,7 @@ nunca mas de una vez
 >sea marcado para recoleccion, o porque el Garbage Collector no se haya activado desde que 
 >el objeto se marco para recoleccion.
 
-#### Clases de envoltorio
+##### Clases de envoltorio
 El paquete `java.lang` cuenta con un grupo de clases que permiten datos primitivos
 en objetos. Para cada tipo primitivo existe una clase envoltorio.
 
@@ -543,7 +543,7 @@ char c2 = c.charValue();
 int i2 = i.intValue();
 ```
 
-##### Autoboxing/Unboxing
+###### Autoboxing/Unboxing
 Desde Java 5, es posible crear objetos de las clases envoltorio asignando directamente
 una literal (sin hacer uso de `new`), a esto se le conoce como **Autoboxing**
 ```java
@@ -558,7 +558,7 @@ int inp = in;
 boolean bop = bo
 ```
 
-##### Inmutabilidad de objetos envoltorio
+###### Inmutabilidad de objetos envoltorio
 Los objetos de clases envoltorio son inmutables, es decir, no se pueden modificar
 La forma en la que funcionan en una operacion es la siguiente.
 ```java
