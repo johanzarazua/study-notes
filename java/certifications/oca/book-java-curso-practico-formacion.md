@@ -27,6 +27,9 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
       - [Ciclo de vida de los objetos](#ciclo-de-vida-de-los-objetos)
         - [Creacion](#creacion)
         - [Destruccion](#destruccion)
+      - [Clases de envoltorio](#clases-de-envoltorio)
+        - [Autoboxing/Unboxing](#autoboxingunboxing)
+        - [Inmutabilidad de objetos envoltorio](#inmutabilidad-de-objetos-envoltorio)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -504,3 +507,70 @@ nunca mas de una vez
 >Puede darse el caso de que un objeto nunca sea eliminado, y esto puede deberse a que nunca
 >sea marcado para recoleccion, o porque el Garbage Collector no se haya activado desde que 
 >el objeto se marco para recoleccion.
+
+#### Clases de envoltorio
+El paquete `java.lang` cuenta con un grupo de clases que permiten datos primitivos
+en objetos. Para cada tipo primitivo existe una clase envoltorio.
+
+| Tipo    | Clase envoltorio |
+| ------- | ---------------- |
+| boolean | Boolean          |
+| byte    | Byte             |
+| short   | Short            |
+| int     | Integer          |
+| long    | Long             |
+| float   | Float            |
+| double  | Double           |
+| char    | character        |
+
+Todas estas clases disponen de un constructor que recibe como parametro el tipo primitivo
+```java
+Integer i = new Integer(40);
+Character c = new Character('#');
+```
+
+A excepcion de Character, todas las clases cuentan con un constructor que recibe 
+como parametro la representacion del tipo primitivo en forma de texto.
+```java
+Integer i = new Integer("79");
+Boolean b =  new Boolean("false");
+```
+
+Adicionalmente, cada una de estas clases cuenta con un metodo para recuperar el 
+valor primitivo. Este metodo sigue la nomeclatura `<primitive-type>Value()`
+```java
+char c2 = c.charValue();
+int i2 = i.intValue();
+```
+
+##### Autoboxing/Unboxing
+Desde Java 5, es posible crear objetos de las clases envoltorio asignando directamente
+una literal (sin hacer uso de `new`), a esto se le conoce como **Autoboxing**
+```java
+Integer in = 89;
+Boolean bo = false;
+```
+
+Tambien es posible recuperar el tipo primitivo asignando el objeto envoltorio a una 
+variable de tipo primitivo, esto es conocido como 
+```java
+int inp = in;
+boolean bop = bo
+```
+
+##### Inmutabilidad de objetos envoltorio
+Los objetos de clases envoltorio son inmutables, es decir, no se pueden modificar
+La forma en la que funcionan en una operacion es la siguiente.
+```java
+Integer a = 10;    
+a = a + 2;
+```
+En la primera linea se utiliza autoboxing para crear el objeto envoltorio.
+En la segunda linea, para poder realizar la operacion se realizan los siguientes pasos:
+1. Se utiliza unboxing para obtener el primitivo de `a`
+2. Se genera un nuevo objeto (autoboxing) utilizando el resultado de la operacion
+
+>[!TIP]
+>Debido a la inmutabilidad, es mas eficiiente utilizar variables primitivas si vamos
+>a realizar operaciones aritmeticas, ya que el proceso de autoboxing/unboxing puede
+>representar un mayor consto de rendiemiento.
