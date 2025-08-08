@@ -21,8 +21,12 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
       - [2.1.3 Inicializacion por defecto](#213-inicializacion-por-defecto)
     - [2.2 Tipos de datos](#22-tipos-de-datos)
     - [2.2.1 Tipos primitivos](#221-tipos-primitivos)
-      - [2.2.1.1 Literales](#2211-literales)
+      - [Literales](#literales)
+      - [Conversion de tipos](#conversion-de-tipos)
     - [2.2.2 Tipos Objeto](#222-tipos-objeto)
+      - [Ciclo de vida de los objetos](#ciclo-de-vida-de-los-objetos)
+        - [Creacion](#creacion)
+        - [Destruccion](#destruccion)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -292,8 +296,23 @@ En Java existen dos grupos de tipos de datos **tipos primitivos** y **tipo objet
 Estos tipos son tratados internamente de forma distinta.
 
 ### 2.2.1 Tipos primitivos
-Los tipos de datos primitivos representan a los tipos basicos del lenguaje. Se cuenta
-con 8 tipos primitivos, los cuales se muestran en la siguiente tabla:
+
+Los tipos de datos primitivos representan a los tipos basicos del lenguaje. Al declarar y asignar 
+valor a un tipo primitivo, internamente la variable almacena el datoen si.
+
+```mermaid
+flowchart LR
+    code[int a = 20;] ==> mem[a = 20]
+```
+
+Si en una siguiente instruccion asignamos esta variable a otra, se genera una copia del dato
+
+```mermaid
+flowchart LR
+    code[int a = 20; <br> int b = a;] ==> mem[a = 20 <br> b = 20]
+```
+
+Se cuenta con 8 tipos primitivos, los cuales se muestran en la siguiente tabla:
 
 | Tipo    | Valores                   |
 | ------- | ------------------------- |
@@ -306,11 +325,7 @@ con 8 tipos primitivos, los cuales se muestran en la siguiente tabla:
 | double  | decimal de 64 bits        |
 | char    | codigo unicode de 16 bits |
 
-<details open>
-
-<summary>2.2.1.1 Literales</summary>
-
-#### 2.2.1.1 Literales
+#### Literales
 A un dato especifico de un tipo primitivo se le conoce tambien como **literal**.
 Los literales se pueden asignarse directamente a la variable del tipo que representan.
 
@@ -345,23 +360,147 @@ int a = 1_000_000 //correcto
 double b = 37.30_49 //correcto 
 ```
 
-</details>
+#### Conversion de tipos
+Todos los datos primitivos pueden ser convertidos a otro tipo de dato, excepto los booleanos.
+Las conversiones de datos pueden ser de dos tipos:
 
--------
+- **Implícitas:** Java convierte de forma automatica el dato origen al tipo de dato destino.
+Es posible utilizar esta conversion siempre que el tipo de dato origen sea de menor o igual 
+tamaño que el destino
 
-Al declarar y asignar valor a un tipo primitivo, internamente la variable almacena el dato
-en si.
+>[!CAUTION]
+>No se podra realizar una conversion implícita cuando:
+> - El tipo origen sea numerico y el destino sea char
+> - El tipo origen sea decimal y el destino sea entero
 
-```mermaid
-flowchart LR
-    code[int a = 20;] ==> mem[a = 20]
-```
-
-Si en una siguiente instruccion asignamos esta variable a otra, se genera una copia del dato
-
-```mermaid
-flowchart LR
-    code[int a = 20; <br> int b = a;] ==> mem[a = 20 <br> b = 20]
-```
 
 ### 2.2.2 Tipos Objeto
+Cualquier clase Java es de tipo objeto, se utilizan mediente variables pero internamente se 
+manejan de forma distinta. Cuando se crear una variable de tipo objeto, esta almacena una
+referencia hacia la zona de memoria donde se encuentra el objeto.
+
+```mermaid
+flowchart LR
+    obj((objeto))
+    code("Object obj = new Object();")
+    mem("obj [10AB]")
+
+    code ==> mem
+    mem -.-> obj
+```
+
+Este tipo de manejo implica que si en algun momento una variable se asigna a otra, tendremos
+dos variables con la misma referencia al objeto.
+
+```mermaid
+flowchart LR
+    obj((objeto))
+    code("Object obj = new Object();")
+    mem("obj [10AB]")
+    code2("Object obj2 = obj;")
+    mem2("obj2 [10AB]")
+
+    code ==> mem
+    code2 ==> mem2
+    mem -.-> obj
+    mem2 -.-> obj
+```
+
+Los objetos no adminten las mismas operaciones que los tipos primitivos (aritmeticas, logicas, etc.).
+En cambio existen metodos que pueden ser utilizados en el flujo del programa para realizar
+alguna accion.
+El uso de estos metodos se realiza mediante la varible, el operador punto y el nombre del metodo
+```java
+Car car = new Car();
+car.turnOn();
+```
+
+#### Ciclo de vida de los objetos
+
+```mermaid
+flowchart LR
+    
+    c(creacion)
+    u(uso)
+    d(destruccion)
+
+    c ==> u
+    u ==> d
+```
+
+##### Creacion
+Para crear una instancia de una clase se utiliza el operador `new` seguido del nombre de la clase
+Esta instruccion crea un objeto nuevo en memoria y devuelve una referencia a este objeto para
+almacenarla en la variable.
+
+```java
+Object obj = new Object();
+String s = new String("hola");
+```
+
+En esta etapa se utilizan los constructores de una clase, estos se ejecutan durante 
+la creacion de un objeto. 
+Los constructores se definen dentro de la clase como un metodo con el mismo nombre de la clase.
+
+```java
+public class TestClass{
+  public TestClass(){
+    ...
+  }
+}
+```
+
+El codigo definido en el constructor se ejecutara cada vez que se cree un objeto de la clase, el objetivo
+de estos metodos es realizar alguna inicializacion de los atributos de la clase por lo que pueden
+recibir parametros.
+Una clase puede contener varios constructores, pero deben diferenciarse por el numero y/o tipos
+de parametros que reciben
+
+```java
+public class TestClass{
+  public TestClass(){
+    ...
+  }
+
+  public TestClass(int i){
+    ...
+  }
+
+  public TestClass(String s){
+    ...
+  }
+}
+```
+
+##### Destruccion
+La destruccion de un objeto y la liberacion de la memoria ocupada por el mismo es realizado
+por un proceso del **Garbage Collector (GC)**.
+Cuando este proceso se ejecute se liberara la memoria de todos los objetos que hayan sido marcados
+para recoleccion.
+
+>[!NOTE]
+>Un objeto es marcado para recoleccion en el momento en que no hay ninguna variable apuntando a el.
+
+
+```java
+
+public static void main(String[] args){
+  Object o1 = new Object();
+  Object o2 = new Object();
+  o1 = o2;  //el primer objeto es marcado para recoleccion
+  o2 = null; //el segundo objeto es marcado para recoleccion
+}
+
+```
+
+>[!NOTE]
+>Cuando un objeto es marcado para recoleccion no hay forma de recuperarlo.
+
+Todas las clases cuentan con un metodo `finalize()`, este metodo es usado por la JVM
+justo antes de ser eliminado de memoria. `finalize()` puede ser llamado una vez o ninguna, pero
+nunca mas de una vez
+
+>[!NOTE]
+>Puede darse el caso de que un objeto nunca sea eliminado, y esto puede deberse a que nunca
+>sea marcado para recoleccion, o porque el Garbage Collector no se haya activado desde que 
+>el objeto se marco para recoleccion.
