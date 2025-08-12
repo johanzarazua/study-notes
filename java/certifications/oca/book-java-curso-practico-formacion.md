@@ -30,6 +30,13 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
         - [Clases de envoltorio](#clases-de-envoltorio)
           - [Autoboxing/Unboxing](#autoboxingunboxing)
           - [Inmutabilidad de objetos envoltorio](#inmutabilidad-de-objetos-envoltorio)
+  - [3. Operadores y estructuras de decision](#3-operadores-y-estructuras-de-decision)
+    - [3.1 Operadores aritméticos](#31-operadores-aritméticos)
+      - [3.1.1 Operadores simples.](#311-operadores-simples)
+      - [3.1.2 Operadores de incremento y decremento](#312-operadores-de-incremento-y-decremento)
+    - [3.2 Operadores de asignacion](#32-operadores-de-asignacion)
+    - [3.3 Operadores condicionales](#33-operadores-condicionales)
+    - [3.4 Operadores logicos](#34-operadores-logicos)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -574,3 +581,71 @@ En la segunda linea, para poder realizar la operacion se realizan los siguientes
 >Debido a la inmutabilidad, es mas eficiiente utilizar variables primitivas si vamos
 >a realizar operaciones aritmeticas, ya que el proceso de autoboxing/unboxing puede
 >representar un mayor consto de rendiemiento.
+
+
+## 3. Operadores y estructuras de decision
+
+### 3.1 Operadores aritméticos
+Permiten realizar operaciones aritméticas con los datos de tipo numérico, incluye
+los tipos primitivos y las clases envoltorio.
+
+Los operadores aritmético son +,-,*,/,%,++,--.
+
+#### 3.1.1 Operadores simples.
+Los operadores simples son suma (+), resta (-), multiplicacion (*), division (/) y 
+resto o modulo (%).
+
+Si utilizamos estos operadores con numeros enteros, el resultado sera siempre int. 
+Pero si alguno de los operandos es long, el resultado tambien sera long.
+
+En el caso de trabajar con numero decimales, el resultado siempre sera del tipo mas grande, por ejemplo, al usar un long y un double el resultado seria double.
+
+#### 3.1.2 Operadores de incremento y decremento
+Se trata de operadores uniarios (se aplican sobre una variable) y solo son utilizables
+con numeros enteros. 
+
+Existen dos operadores incremento (++) y decremento (--)
+
+Estos operadores realizan una conversion del resultado al tipo de la varible, por ejemplo, `a++` es equivalete a `a = (byte)(a+1)`
+
+Otro aspecto importante de estos operadores es la posicion del operador, ya que pueden 
+utilizarse antes o despues de la variable. Al utilizarse solo estos operadores la 
+posicion es irrelevante ya que `a++` tiene el mismo efecto que `++a`, sin embargo, esto cambia cuando se utilizan mas operadores en la expresion
+
+- **despues de la variable:** primero se usa el valor de la variable y despues se hace el incremento
+- **antes de la variable:** primero se hace el incremento y despues se usa el valor de la variable
+
+```java
+int a = 5, b = 5;
+int x = a++;
+int y = ++b;
+```
+
+En el ejemplo anterior a y b terminarian con un valor de 6, sin embargo, x tendrian el valor 5 
+mientras que y tendria el valor 6. 
+
+### 3.2 Operadores de asignacion
+Se emplean para asignar un valor a una variable, el operador mas comun es =, sin embargo existenten
+tambien los operadores +=, -=, *=, /= y %=. Estos ultimos operadores permiten realizar una operacion
+aritmetica utlizando el valor de una variable y asignando el resultado a la misma variables. Son unarios e incluyen un casting del resultado de la operacion al tipo de la variable. Por ejemplo
+`a = a + 3` es equivalente `a += 3`
+
+### 3.3 Operadores condicionales 
+Son empleados para evaluar una condicion y dan como resultado un valor boolean, suelen ser usados en
+instrucciones de control de flujo.
+
+En este grupo se encuentran los operadores <, >, <=, >=, ==, !=. Solo pueden usarse con tipos
+primitivos y compatibles entre si
+
+>[!NOTE]
+>El operador == puede usarse con objetos
+
+### 3.4 Operadores logicos
+Existen 3 operadores logicos and (&&), or (||) y not (!), estos realizan operaciones sobre tipos
+boolean y dan como resultado un valor boolean.
+
+>[!NOTE]
+>Tanto && como || funcionan en modo cortocircuito, es decir, si la evaluacion del primer operando
+determina el resultado de la operacion, el segundo operando no es evaluado.
+
+
