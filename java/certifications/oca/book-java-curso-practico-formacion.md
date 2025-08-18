@@ -36,7 +36,16 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
       - [3.1.2 Operadores de incremento y decremento](#312-operadores-de-incremento-y-decremento)
     - [3.2 Operadores de asignacion](#32-operadores-de-asignacion)
     - [3.3 Operadores condicionales](#33-operadores-condicionales)
+      - [3.3.1 Igualdad de objetos](#331-igualdad-de-objetos)
+        - [Pool de objetos.](#pool-de-objetos)
+      - [3.3.2 Igualdad de cadenas de caracteres.](#332-igualdad-de-cadenas-de-caracteres)
+        - [Igualdad de objetos StringBuilder.](#igualdad-de-objetos-stringbuilder)
+      - [3.3.2 Igualdad de objetos de envoltorio.](#332-igualdad-de-objetos-de-envoltorio)
     - [3.4 Operadores logicos](#34-operadores-logicos)
+    - [3.5 Otros operadores](#35-otros-operadores)
+    - [3.6 Estructuras de decision](#36-estructuras-de-decision)
+      - [3.6.1 Setencia If Else](#361-setencia-if-else)
+      - [3.6.2 Setencia Switch](#362-setencia-switch)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -596,8 +605,6 @@ Los operadores simples son suma (+), resta (-), multiplicacion (*), division (/)
 resto o modulo (%).
 
 Si utilizamos estos operadores con numeros enteros, el resultado sera siempre int. 
-Pero si alguno de los operandos es long, el resultado tambien sera long.
-
 En el caso de trabajar con numero decimales, el resultado siempre sera del tipo mas grande, por ejemplo, al usar un long y un double el resultado seria double.
 
 #### 3.1.2 Operadores de incremento y decremento
@@ -631,14 +638,78 @@ aritmetica utlizando el valor de una variable y asignando el resultado a la mism
 `a = a + 3` es equivalente `a += 3`
 
 ### 3.3 Operadores condicionales 
-Son empleados para evaluar una condicion y dan como resultado un valor boolean, suelen ser usados en
-instrucciones de control de flujo.
+Son empleados para evaluar una condicion y dan como resultado un valor boolean, suelen ser usados eninstrucciones de control de flujo.
 
-En este grupo se encuentran los operadores <, >, <=, >=, ==, !=. Solo pueden usarse con tipos
-primitivos y compatibles entre si
+En este grupo se encuentran los operadores <, >, <=, >=, ==, !=. Estos solo pueden usarse con tipos primitivos y compatibles entre si, a excepcion del operador == que puede utilizarse con objetos
+
+#### 3.3.1 Igualdad de objetos
+El operador == puede ser utilizado con objetos, en estos caso se realiza una comparacion de las referencias
+hacia el objeto y no del objeto como tal, por ejemplo:
+
+```java
+Integer a = new Integer(3);
+Integer b = new Integer(3);
+Integer c = a;
+System.out.println(a == b); //print false
+System.out.println(a == c); //print true
+```
 
 >[!NOTE]
->El operador == puede usarse con objetos
+>Cuando utilizamos el operador == con objetos debemos asegurarnos de que sean del mismo tipo, si se
+>utiliza con objetos de diferentes tipos se genera un error de compilacion
+
+---
+##### Pool de objetos.
+Cuando se trabaja con la clase String o clases envoltorio de tipo numericas y literales, java hace un manejo 
+especial de estos objetos para optimizar el uso de memoria. La JVM utiliza un pool de objetos
+donde almacena los literales, esto provoca que al crear un objeto usando una literal no se crea un nuevo
+objeto directamente, primero comprueba su existencia en el pool, si existe devuleve una referencia al
+objeto alamcanado en el pool, si no existe crea un nuevo objeto y lo alamacena en el pool.
+
+----
+
+#### 3.3.2 Igualdad de cadenas de caracteres.
+La comparacion entre objetos de tipo String funciona de la misma forma que la comparacion entre objetos
+si se utiliza el operador ==, sin embargo, si los objetos fueron creados utilizando el pool de objetos
+la comparacion arrojara true al compararlos. Ejemplo:
+```java
+String a = "Hola";
+String b = "Hola";
+
+System.out.println(a == b); //print true
+```
+
+El ejemplo anterior imprime true debido al manejo de java con las literlas, lo que pasa en el ejemplo
+es que al crear la variable `a` se genera un nuevo objeto y se agrega a pool, debido a que la virable
+`b` se crea utilizando el mismo literal, esta sentencia no crea un nuevo objeto, si no que toma el objeto
+existente en el pool.
+
+Si se desea comparar el texto almacenado en dos objetos de la clase String, lo correcto es utilizar el metodo **equals()**, este metodo hace distincion entre mayusculas y minusculas, y devolvera `true` siempre que las cadenas en ambos objetos sean iguales. Si se requiere hacer una comparacion donde no se distinga entre mayusculas y minusculas podmeos usuar el metodo **equalsIgnoreCase()**.
+
+>[!NOTE]
+>El metodo equals() existe en todas las clases debido a que se hereda de Object, sin embargo, no todas las
+>clases hacen una implementacion de este metodo.
+
+##### Igualdad de objetos StringBuilder.
+La clase StringBuilder permite tener cadenas de caracteres mutables, sin emabrgo, la comparacion de los
+estas cadenas es especial debido a que:
+
+- Si se utiliza el operador == la comparacion se hace hacia la referencia del objeto
+- La clase StringBuilder no implementa el metodo equals, utiliza el metodo por defecto de Object, por lo que
+solo devolvera true si las dos variables apuntan al mismo objeto
+
+La forma que tenemos para comparar las cadenas almacenadas en objetos de StringBuilder es convirtiendolos
+a objetos String y posteriormente utilizar el metodo equals o equalsIgnoreCase
+
+#### 3.3.2 Igualdad de objetos de envoltorio.
+Al igual que con la clase String, las clases de envoltorio funcionan de forma muy parecida en las comparaciones:
+
+- Dos objetos de envoltorio, creados con constructores, que almacenen el mismo valor daran `false` al
+comparse con el operador ==
+- Dos objetos de envoltorio, creados con literlaes , que almacenen el mismo valor daran `true` al
+comparse con el operador == esto debido al pool de objetos
+- La forma correcta para comparar el valor envuleto es utilizar el metodo equals.
+
 
 ### 3.4 Operadores logicos
 Existen 3 operadores logicos and (&&), or (||) y not (!), estos realizan operaciones sobre tipos
@@ -648,4 +719,94 @@ boolean y dan como resultado un valor boolean.
 >Tanto && como || funcionan en modo cortocircuito, es decir, si la evaluacion del primer operando
 determina el resultado de la operacion, el segundo operando no es evaluado.
 
+### 3.5 Otros operadores
+Estos operadores no entran en ninguna agrupacion, sin embargo, son utilizado con frecuencia en los
+programas
 
+- **new:** permite crear objetos de una clase, este se utiliza acompañado del constructor de la clase 
+sobre la que se quiere crear un objeto. Ejemplos: 
+```java
+Object o = new Object();
+String nombre = new String();
+```  
+
+- **instanceof:** permite validar si un objeto es de una determinada clase, es in operador binario
+la sintaxis para utilizarlo es la siguinete `<objeto> instanceof <Class>` y el resultado obtenido es
+un boolean. Este operador es muy utili cuando se aplica polimorfismo. Ejemplo:
+```java
+System.out.println(o instanceof Object); //print true
+System.out.println(nombre instanceof Integer); //print false
+```
+
+- **operador ternario:** es una abreviacion de la estructura de decision if, 
+es utilizado cuando se debe devolver un resultado tanto cuando la expresion es verdadera como cuando
+es falsa. La sintaxis para utilizarla es `variable = condicion ? <valor si es true> : <valor si es false>`. Ejemplos
+```java
+int a =3, b =1, c;
+c = (a>b) ? 4 : 2;
+```
+
+### 3.6 Estructuras de decision
+Las estructuras de decision nos permiten controlar que flujo u operaciones debe ejecutar un programa
+a partir de la comprobacion de una expresion logica
+
+#### 3.6.1 Setencia If Else
+La instruccion `if else` nos permite ejecutar bloques de sentencias segun una expresion booleana, cuando 
+la expresion validacion es `true` se ejecutan las senetencias del bloque `if`, opcionalmente se puede indicar 
+el bloque `else`, las sentencias en este bloque se ejecutan cuando la validacion es `false`.
+Ejemplo :
+
+```java
+if(a%2 == 0){
+  System.out.println("es par");
+}else{
+  System.out.println("es impar");
+}
+```
+
+Estas setencias pueden usarse con llaves `{}` para agrupar multiples setencias o sin ellas, 
+cuando no se utilizan las llaves unicamente se ejecutara la setencia siguiente a if o else.
+
+```java
+int x = 3;
+if (x < 3)
+  x++;
+  x--;
+```
+
+En el ejemplo anterior el valor final de x es 2, esto debido que no se cumple la validacion en if
+y al no utilizar llaves `{}` la unica sentencia del bloque `if` es `x++;`, la instruccion `x--` esta
+fuera del bloque if.
+
+>[!CAUTION]
+>If solo permite evaluar expresiones booleanas, si se coloca una setencia que devuleva un valor que no
+>sea boolean se produce un error de compilacion
+
+#### 3.6.2 Setencia Switch
+La sentencia `switch` es una instruccion de alternativa multilpe, puede realizar multiples acciones en
+funcion de la validacion de una expresion. La sintaxis de esta sentencia es
+```
+switch(<expresion>){
+  case <valor 1>:
+    <bloque de sentencias>
+    break;
+  case <valor 2>:
+    <bloque de sentencias>
+    break;
+  default:
+    <bloque de sentencias>
+    break;
+}
+```
+
+La expresion debe devolver un valor int, convertible implicitamente a int o un string. El resultado
+de esta expresion es lo que determina en que `case` entrar, en caso de conicidir con ninugno de los definidos
+entrara al bloque default.
+
+>[!NOTE]
+>Los case deben aceptan literales o constantes, no es posible utilizar varibles, y deben conicidir con el 
+>valor devuelto en la expresion int (o convertible implicitamente a int) o string.
+
+>[!NOTE]
+>La expresion break es opcional, pero si no se coloca el programa entrara en el bloque case que coincida
+>y en todos los que esten debajo de el.
