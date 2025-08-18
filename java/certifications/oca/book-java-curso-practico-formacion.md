@@ -46,6 +46,11 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
     - [3.6 Estructuras de decision](#36-estructuras-de-decision)
       - [3.6.1 Setencia If Else](#361-setencia-if-else)
       - [3.6.2 Setencia Switch](#362-setencia-switch)
+  - [4. Arrays](#4-arrays)
+    - [4.1 Declaracion](#41-declaracion)
+    - [4.2 Instanciacion](#42-instanciacion)
+    - [4.3 Acceso a datos de un array.](#43-acceso-a-datos-de-un-array)
+    - [4.4 Arrays como parametros](#44-arrays-como-parametros)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -808,5 +813,61 @@ entrara al bloque default.
 >valor devuelto en la expresion int (o convertible implicitamente a int) o string.
 
 >[!NOTE]
->La expresion break es opcional, pero si no se coloca el programa entrara en el bloque case que coincida
->y en todos los que esten debajo de el.
+>La expresion break es opcional, pero si no se coloca el programa entrara en el bloque case que coincida y en todos los que esten debajo de el.
+
+
+## 4. Arrays
+Un array es un conjunto de datos del mismo tipo, en java los arrays son objetos y pueden
+ser manejados mediante variables. Son estructuras de datos estaticas, es decir, una vez definido su tamaño
+no es posible modificarlo
+
+Cada dato del array tiene un indice, siendo la posicion 0 el primer elemento y `tamaño - 1` el ultimo. Este 
+indice es importante ya que mediante el se pueden acceder a los datos.
+
+### 4.1 Declaracion
+Los arrays se manejan mediante variables, por lo que deben declarase.
+Para declarar un array se utilizan corchetes `[]`, estos pueden situarse en dos zonas
+
+- **antes del nombre de la variable:** `int[] miArray`
+- **despues del nombre de la variable:** `int miArray[]`
+
+Siendo la primera forma la mas comun
+La inicializacion de una array, al ser un objeto, depende del ambito. Si es declarado como
+atributo de la clase se inicializara en `null`, por otro lado si es de ambito local no se 
+inicializa de forma implicita 
+
+>[!CAUTION]
+>En la declaracion no se puede indicar el tamaño, ya que provoca un error de compilacion
+
+### 4.2 Instanciacion
+Para crear un array utilizaremos el operador `new` acompañado del tipo y entre corchetes
+el tamaño que se quiere asignar al array. `int[] miArray = new int[10]`
+
+Independiente del ambito de la variable, una vez creado todas sus posiciones se inicializan
+con el valor por defecto del tipo.
+
+Existen formas abreviadas de realizar las instanciacion, las cuales son:
+- `int[] vals = new int[]{1,2,3,4}`
+- `int[] vals = {1,2,3,4}`
+
+Ambos casos crean un arreglo de 4 posiciones con los valores indiicados
+
+### 4.3 Acceso a datos de un array.
+El acceso a los datos se realiza utilizando la variable y el indice del elemento que 
+queremos obtener.
+
+Todos los arrays disponen del atributo `lenght`, este nos permite saber el tamaño del array. Es decir,
+nos dice el numero de elementos que puede almacenar.
+
+```java
+int datos[] = new int[5]
+datos[1] = 10;
+datos[5] = 3; //error
+```
+
+>[!CAUTION]
+>Los indices de un array van de 0 a `lenght - 1`, si se intenta utilizar un indice fuera
+>de este rango se produce una excepcion `ArrayIndexOutOfBoundsException`
+
+
+### 4.4 Arrays como parametros
