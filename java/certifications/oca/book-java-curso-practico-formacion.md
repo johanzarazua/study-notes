@@ -54,6 +54,14 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
     - [4.5 Arrays multidimensionales](#45-arrays-multidimensionales)
     - [4.6 Arrays irregulares](#46-arrays-irregulares)
   - [5. Instrucciones de repeticion](#5-instrucciones-de-repeticion)
+    - [5.1 Instruccion For](#51-instruccion-for)
+      - [5.1.1 For Each](#511-for-each)
+    - [5.2 Instruccion While](#52-instruccion-while)
+      - [5.2.1 Do While](#521-do-while)
+    - [5.4 Instrucciones break y continue](#54-instrucciones-break-y-continue)
+      - [5.4.1 Break](#541-break)
+      - [5.4.2 Continue](#542-continue)
+    - [5.3 Bucles etiquetados](#53-bucles-etiquetados)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -960,5 +968,152 @@ de diferentes tamaños en cada posicion.
 
 El acceso y recorrido de estos arrays se realiza de la misma forma que con un array multidimensional
 
-
 ## 5. Instrucciones de repeticion
+Las estructuras de repeticion o **bucles** permiten ejecutar multiples veces un bloque de 
+codigo, en Java existenten dos instrucciones de este tipo: for y while.
+
+### 5.1 Instruccion For
+permite ejecutar un bloque de instrucciones un determinado numero de veces, este 
+numero de repeticiones es determinado por una varibale de control.
+
+La sintaxis de for es la siguiente: 
+```java
+for(inicializacion; condicion; incremento){
+  //instrucciones
+}
+```
+
+La instruccion funciona de la siguiente manera:
+1. Se ejecuta la instruccion de inicializacion una sola vez, esta inicializa la variable 
+de control.
+1. Se evalua la condicion, mientras sea verdadera se ejecuta el bloque de setencias.
+2. Al finalizar cada iteracion se ejecuta la instruccion de incremento (o decremento).
+
+Consideraciones de la instruccion for:
+- Las **llaves son obligatorias si el bloque interno tiene mas de una instruccion.**
+- Las **instrucciones de control son opcionales**, pueden no aparecer algunas o incluso no
+tener ninguna, **pero es necesario indicar los `;` de separacion**
+- Las instrucciones de control pueden tener mas de una setencia, de tenerlo deben separarse
+por comas `,`
+
+Ejemplos de instrucciones for:
+```java
+for(int i = 0; i<5; i++)
+  System.out.println(i);
+
+
+int i = 1;
+for (;i<10;){
+  System.out.println(i);
+  i++
+}
+
+for(int a=0, b=10; a<b ; a++, b--){
+  System.out.println(a+b);
+}
+```
+
+#### 5.1.1 For Each
+Existe una variante de la instruccion for llamada enhanced for (for each), esta variante
+esta diseñada para el recorrido de arrays o colecciones.
+La diferencia principal es que en lugar de utilizar un indice para acceder a los elementos,
+la variable de control apunta directamente a una posicion de la coleccion, esta variable 
+avanzara con cada iteracion hasta pasar por todas las posiciones.
+La variable de control no contiene la posicion, sino el propio elemento que exista en la 
+posicion.
+
+La sintaxis para utilizarla es:
+```java
+for(tipo variable_control : coleccion){
+  //instrucciones
+}
+```
+
+Ejemplo:
+```java
+int[] nums = {1,2,3,4};
+for(int num : nums){
+  System.out.println(num);
+}
+```
+
+### 5.2 Instruccion While
+Es una instruccion que ejecuta un bloque de instruccione siempre que se cumpla una condicion
+La sintaxis de while es:
+```java
+while(condicion){
+  //instrucciones
+}
+```
+
+La forma en la que funciona un while es la siguinete:
+1. Se evalua la condicion, si es verdadera se ejecuta el bloque de instrucciones
+2. Al final de la iteracion, se vuelve a evaluar la condicion, si continua
+siendo verdadera se ejecuta nuevamente el bloque
+
+Estos pasos se repiten hasta que la condicion sea falsa. 
+
+Comunmente las acciones dentro del bloque provocaran que en algun momento la condicion
+deje de cumplirse, sin embargo, tambien es posible que la condicion nunca de false
+por lo que estaria iterando de manera infinita.
+
+>[!TIP]
+>while se utiliza cuando se desconoce el numero de veces que hay que realizar la ejecucion
+>del bloque
+
+#### 5.2.1 Do While
+Es una variante de `while`, en esta se realiza una primera ejecucion del bloque de 
+sentencias y despues se realiza la validacion de la condicion, si esta se cumple,
+se repite la ejecucion. La sintaxis de do while es:
+```java
+do{
+  //instrucciones
+}while(condicion);
+```
+
+>[!TIP]
+>Do while suele usarse cuando primero debe obtenerse un valor que es usado en la condicion
+
+### 5.4 Instrucciones break y continue
+Las instrucciones `break` y `continue` permiten abandonar de forma forzada un bucle.
+Pueden ser utilizadas en bulces `for`, `for each`,`while`,`do while`
+
+#### 5.4.1 Break
+La instruccion `break` nos permite abandonar un bucle, pasando el control del programa
+a la siguiente instruccion
+
+```java
+for (int i=0; i<10; i++){
+  if(i>3)
+    break;
+
+  System.out.println(i);
+}
+```
+
+En el ejemplo anterior se imprimiria los numeros `0,1,2,3`, al `i` ser mayor a 3 
+ejecutara la instruccion `break;` y saldra del bucle 
+
+#### 5.4.2 Continue
+La instruccion `continue` no nos permite salir del bucle, unicamente pasa a la siguiente 
+iteracion. El control del porgrma sigue estando en el bucle
+
+```java
+for (int i=0; i<10; i++){
+  if(i<3)
+    continue;
+
+  System.out.println(i);
+}
+```
+
+En el ejemplo anterior se imprimiria los numeros `4,5,6,7,8,9,10`, al `i` ser menor a 3 
+ejecutara la instruccion `continue;` y pasaria a la siguiente iteracion.
+
+### 5.3 Bucles etiquetados
+Es posible etiquetar los bluces, esto es especialmente util cuando se utilizan blucles
+anidados y necesitar utilizar las instrucciones `break` o `continue` ya que permiten 
+indicar la etiqueta sobre el bucle que se desea abandonar
+Para etiquetar un bucle podemos usar la sintaxis `<etiqueta>:<bucle>`
+Para utilizar una etiqueta en la salida de un blucle se debe segir la sintaxis  `(break|continue) <etiqueta>`
+
