@@ -51,6 +51,9 @@ del autor **Antonio Martín Sierra**, editorial **Alfaomega**, ISBN **978-607-53
     - [4.2 Instanciacion](#42-instanciacion)
     - [4.3 Acceso a datos de un array.](#43-acceso-a-datos-de-un-array)
     - [4.4 Arrays como parametros](#44-arrays-como-parametros)
+    - [4.5 Arrays multidimensionales](#45-arrays-multidimensionales)
+    - [4.6 Arrays irregulares](#46-arrays-irregulares)
+  - [5. Instrucciones de repeticion](#5-instrucciones-de-repeticion)
 
 
 ## 1. Fundamenrtos de JAVA.
@@ -865,9 +868,97 @@ datos[1] = 10;
 datos[5] = 3; //error
 ```
 
+>[!NOTE]
+>Se pueden recorrer todos los elementos de un arreglo mediante una estructura de repeticion (for)
+
 >[!CAUTION]
 >Los indices de un array van de 0 a `lenght - 1`, si se intenta utilizar un indice fuera
 >de este rango se produce una excepcion `ArrayIndexOutOfBoundsException`
 
 
 ### 4.4 Arrays como parametros
+Un array es un objeto, por lo que las variables contienene una referencia al array y no el 
+array en si. Esto genera que al utilizarlo como argumento de un metodo ambos, flujos apunten al mismo objeto, 
+es decir, al modificarse en el metodo tambien sera visible en el flujo principal.
+
+```java
+void save(){
+  int[] prices = new int[10];
+  discount(prices);
+  System.out.println(prices[0]); //print 5
+}
+
+void discount(int[] prices){
+  prices[0] = 5;
+}
+```
+
+Desde java 5 es posible utilizar un numero variable de argumentos, esto se puede realizar
+declarando el metodo de la siguiente manera `public void metodo(int...m)`, de esta manera
+podemos llamar al metodo con 0 o n argumentos:
+
+```java
+metodo();
+metodo(1,4,6);
+metodo(2);
+```
+
+Un numero variable de argumentos es equivalente a un array, por lo que tambien puede invocarse
+el metodo utilizando un array `metodo(new int[]{1,4,8,10})`
+
+Java de forma interna maneja el numero variable de argumentos como un array, por lo que la forma
+de utilizarlos dentro del metodo es la misma.
+```java
+public void metodo(int...m){
+  for (int i = 0; i < m.lenght; i++)
+    System.out.println(m[0]);
+}
+```
+
+>[!NOTE]
+>Es posible combinar numero fijo de parametos con numero variable, la unica condicion es 
+>que el que reciba un numero variable sea el ultimo de la lista 
+
+### 4.5 Arrays multidimensionales
+Es posible utilizar arrays de mas de una dimension, la forma de declararlos es la misma 
+pero se incorporar un par de corchetes `[]` por cada dimension extra.
+```java
+int [] ar;
+int [] ar2 [];
+int ar3 [][][];
+```
+
+Para instanciarlos igualmente utilizamos el operador `new` y se debe indicar entre corchetes 
+el tamaño de cada una de las dimensiones
+```java
+int [] ar = new int[5];
+int [] ar2 [] = new int[2][3];
+int ar3 [][][] =  new int [1][2][6];
+```
+El numero de elementos de un array multidimensional siempre esta dado por el producto de los 
+tamaños de cada dimension.
+
+Para acceder a los datos de una array multidimensional se debe indicar un inidice por dimension
+`ar3[0][1][1]`
+
+>[!NOTE]
+>Al igual que un array de una dimension, los arrays multidimensionales pueden recorrerse mediante
+>estructuras de repeticion, pero debe usarse una estructura por cada dimension.
+
+### 4.6 Arrays irregulares
+Al crearse un array multidimensional es posible dejar algunas de sus dimensiones sin asignar un tamaño,
+pero siempre debe ser la ultima o ultimas, no pueden dejarse sin definir tamaño las dimensiones
+iniciales o intermedias
+```java
+int[][][] a = new int[5][][]; //ok
+int[][][] a = new int[4][][6]; //error
+```
+
+Se les conoce como arrays irregulares debido a que a cada posicion definida se le puede 
+asignar un array de las dimensiones que quedn por asignar, esto permite puedan asignarse arrays
+de diferentes tamaños en cada posicion.
+
+El acceso y recorrido de estos arrays se realiza de la misma forma que con un array multidimensional
+
+
+## 5. Instrucciones de repeticion
