@@ -102,3 +102,109 @@ determinado. Esta medida depende directamente de la **latencia** y la **capacida
 >El trabajo de un arquitecto de software es minimazar la latencia, ya que esto ayudara 
 >a maximizar el rendimiento considerando que siempre tendremos la capacidad neceseria.
 
+## Medidas de rendimeinto
+Las medidas importantes que debemos conocer para determinar el rendimeinto de un 
+sistema son:
+
+- latencia: afecta la experiencia del usuario, el objetivo es que sea lo mas baja posible
+  
+- rendimiento: afecta el numero de solicitudes que se admiten, el objetivo es que sea lo mas
+grande posible y como minimo que sea mayor al numero maximo de usuarios que se admitiran
+
+- errores: se mide como porcentaje, indica si la solucion es funcional o no. Se permiten
+errores de tiempo de espera o tiempo de procesamiento pero no deben ser errores en 
+funcionalidades
+
+- saturacion de recurso: nos indica la cantidad de recursos que se utilizan (cpu, red, etc.)
+permite saber si es necesario hacer ajustes en hardware (disminuir o aumentar)
+
+Otro aspecto importante es la latencia en cola de peticiones, esta se mide medinete un grafico
+en el cual se representan el numero de peticiones (eje Y) y el tiempo de respuesta (eje X)
+
+![alt text](images/latency-queuing.png)
+
+Permite indificar el tiempo de respuesta que se tiene a medida que aumentan las solicitudes.
+Lo ideal es que la mayoria se encuentre con una latencia baja, de no ser asi nos indica
+que hay problemas de latencia.
+
+## Latencia en peticiones seriales
+### Latencia de red
+La latencia de red se puede separar en dos tipos de redes, internet e intranet.
+
+internet: comunicacion entre el navegador y nuestro server.
+Este tipo de comunicacion suelen ser de distancias largas e implican multiples redes de por medio, 
+lo que puede generar que no sean tan rapidas
+
+intranet: comunicacion entre servicios alojados dentro de una misma red.
+Suelen ser comunicciones de distancias cortas ademas de ser conexiones muy fiables, esto hace
+que las conexiones sean bastante rapidas.
+
+Ambos tipos de redes pueden presentar latencia, sin emabrgo, las consideraciones son distintas
+segun el tipo de red del que se trate
+
+#### Transferencia de datos
+Al momento de trasnferir datos se puede presentar latencia, y esta depende de la forma de 
+conexion entre el punto A y B.
+
+En una conexion cableada, los datos viajan a traves del cable por lo que la latencia es el tiempo
+que los datos se tardan en llegar del punto A al punto B, y puede verse afectado por **distancia**,
+**calidad del medio de conexion**, **congestion de red**, etc.
+
+#### Creacion de conexiones
+La creacion de conexiones (conexiones TCP) es otro punto donde se puede presentar latencia.
+Cuando un cliente requiere comunicarse con un servidor, es necesario realizar una conexion TCP, 
+la cual tiene los siguientes pasos:
+![alt text](images/tcp-connection.png)
+
+Cada uno de los pasos requiere cierto tiempo para completarse, y este tiempo puede variar
+dependiendo de factores como **distancia fisica**, **trafico de red**, **hardware de red**. etc.
+
+Otro tipo de conexiones son SSL/TLS, suelen ocurrir cuando un cliente intenta comunicar con un
+servidor mediante una red de internet, esta conexion se realiza con un socket seguro.
+Este tipo de conexione estan por encima de una conexion TCP, es decir, el cliente debera
+crear la conexion TCP y ademas debe realizar pasos extras para completar la conexion SSL o TLS
+
+![alt text](images/ssltls-connection.png)
+
+Estos pasos extras represenatan un tiempo adicional en la creacion de la conexion, ademas de que
+tambien pueden verse afectado por diversos factores que impacten en el tiempo.
+
+
+#### Manejo de la latencia de red
+
+**Persistent Connections** <br>
+Podemos reducir o evitar la latencia producida por la creacion de conexiones evitando crear una 
+nueva conexion con un servidor o servicio cada vez que la utilicemos, para ello debemos asegurarnos
+de que nuestro cliente implemente y utilice **persistent connections**. Esto nos permite crear
+una conexion y reutilizarla n veces.
+
+Los navegadores por defecto utilizan **persistent connections**, por lo que desde ese lado
+no debemos preocuparnos por hacer un manejo por nuestra cuenta.
+
+Cuando se trabaja con conexion a bases de datos, el concepto **persistent connections**
+se aplica utilizando un pool de conexiones, con ello se crean algunas conexiones a DB las
+cuales pueden ser reutilizadas 
+
+**Transferencia de datos**
+La transferencia de datos puede presentar latencia por diferentes factores, los siguientes 
+puntos pueden ayudarnos a disminuirla.
+
+- **Datos en cache o sesiones:** almacenar datos en cache o en sesiones nos permite reducir
+o incluso evitar la trasnferencia de informacion en la red, es utili con datos que no
+suelen cambiar con frecuencia.
+
+Los navegadores tambien lo utilizan para alamcenar datos estaticos como imagenes, archivos 
+javascript, archivos css, entre otros
+
+- **Formato de datos y compresion:** es importnate determinar el formato de datos correctos
+y por ende el protocolo de comunicacion adecuado para el sistema, esto nos da una mejora
+en latencia pero puede reducir la interoperabilidad entre aplicaciones.
+
+Otro aspecto que debemos aplicar en las respuesta es la compresion de datos, con el fin de
+reducir el tamaño de los datos que se trasnfieren. Esto puede provocar una sobrecarga en la
+compresion y descompresion de datos pero no suele ser tan costosa o significativa.
+
+- **SSL session caching:** al utilizar conexiones SSL existen datos qie se intercambian 
+entre el cliente y el servidor, estos pueden almacenarse en cache y eso permitiria 
+tomar un atajo al momento de crear una conexion mejorando los tiempos en este proceso
+
