@@ -206,5 +206,67 @@ compresion y descompresion de datos pero no suele ser tan costosa o significativ
 
 - **SSL session caching:** al utilizar conexiones SSL existen datos qie se intercambian 
 entre el cliente y el servidor, estos pueden almacenarse en cache y eso permitiria 
-tomar un atajo al momento de crear una conexion mejorando los tiempos en este proceso
+tomar un atajo al momento de crear una conexion mejorando los tiempos en este
+
+### Latencia en memoria
+En cuanto a memoria, los factores que pueden presentarnos problemas son:
+
+- **Memoria Heap finita:** todo proceso tiene una cantidad finita de memoria y si
+se supera este limite el proceso puede fallar o tener problemas de rendimeinto. <br><br>
+Se debe tener cuidado con especialmente con los procesos que recolectan basura 
+(**Garbage Collectors**) ya que si se ejecutan cuando la memoria este a punto de acabarse,
+puede provocar que algunos usuarios pueden experimentar un rendimeinto bastante malo del sistema
+
+- **Memoria Heap grande:** cuando un proceso utiliza mas memoria de la que tiene
+de forma fisica puede provocar que el sistema operativo use procesos de swiping entre la memoria
+fisica y el disco duro, esto genera un costo extra de procesamiento. <br><br>
+Esto tambien afecta mucho a procesos de recoleccion de basura, ya que tendra que hacer
+la recoleccion de una gran cantidad de objetos y eso puede provocar problemas de rendimiento
+
+- **Algoritmo del Garbage Collector:** cada **Garbage Collector** tiene su propio algoritmo y 
+esta especializado para cierto tipo de recoleccion, es importante elegir el algoritmo correcto 
+ya que puede tener impacto en procesamiento, especialmente en los procesos que manejen muchos
+datos.
+
+- **DB Buffer memory:** las bases de datos cuentan con un buffer de memoria donde se 
+rralizan ciertas las operaciones antes de escribirlas en disco, esta memoria es finita
+por lo que puede provocar problemas de rendimeinto si las operaciones realizadas
+sobrepasan el limite del buffer.
+
+#### Manejo de latencia en memoria
+- **Evitar el aumento de memoria:** cosniste en crear procesos que utilicen la menor
+cantidad de memoria que sea posible. Esto ayudara a que la memoria Heap sea pequeña
+y que el trabajo del Garbage Collector sea minimo para evitar que retrase nuestros procesos.<br><br>
+Tambien se debe buscar que el codigo base sea lo mas pequeño posible, con el fin de reducir
+los intercambios entre ram y procesador.
+
+- **Referencias Weak/Soft:** este tipo de referencias son utiles cuando se asignan objetos
+demasiado grandes abriendo la posibilidad de que el proceso se quede sin memoria, permiten
+que el Garbage Collector limpie estos objetos cuando lo considere necesario o detecte
+que falta memoria. Este manejo conlleva a que el programa debera validar si aun existen
+estas referencias antes de usarlas, pero esto representa un costo menor a quedarse sin memoria.
+
+- **Multiples procesos pequeños:** consite en dividir un proceso, el cual maneja cantidades
+muy grandes de datos y ocupa mucha memoria, en multiples procesos pequeños que se 
+repartan el trabajo.<br><br>
+Esto ayuda a disminuir la memoria utilizada y tambien puede traer una mejora en el tiempo
+de procesamiento. 
+
+- **Algoritmo del Garbage Collector:** existen diferentes tipos de ejecucion de los Garbage 
+Collectors, por lo que es importante seleccionar un tipo de ejecucion adecuada para nuestro 
+proceso principal.<br><br>
+En general los algoritmos se pueden agrupar en dos tipos: ejecucion lineal o ejecucion paralela.<br>
+En ejecucion lineal el proceso del Garbage Collector detiene por completo otros procesos hasta
+que el finalice, es util cuando nuestro proceso realiza alguna ejecucion por lotes, pero se debe
+buscar que el tiempo de ejecucion del Garbage Collector sea el menor posible.<br>
+En ejecucion paralela el proceso del Garbage Collector se ejecuta a la par que nuestros procesos,
+este tipo tambien implica algunas pausas en nuestro procesos pero suelen ser muy cortas, es 
+recomendando cuando se hacen procesamientos en tiempo real.
+
+- **Normalizacion en DB:** esta tecnica consiste en organizar los datos de tal forma que se
+reduzca la redundancia y se mejore la integridad de los datos, realizar esto nos ayuda a utilizar
+de mejor manera el buffer de memoria que tienen las bases de datos.<br>
+Otro punto importante para mejorar el rendimeinto de una DB es evitar almacenar datos que no
+sean necesarios o puedan calcularse a partir de otros, el almacenarlos en tablas implica
+que en algun momento se cargaran en el buffer por lo que tendra un impacto en redimiento.
 
